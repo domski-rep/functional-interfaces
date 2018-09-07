@@ -5,6 +5,7 @@ import static myown.creators.MyListCreator.collectFrom;
 import myown.interfaces.MyMapper;
 import myown.interfaces.MySelector;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,14 +18,21 @@ public class StartClass {
 
     private void init() {
         List<Integer> src1 = Arrays.asList(1, 2, 3, 7, 19, 111, 12);
-        System.out.println(testList_1(src1)); // <--- test_1 is about select
-        // numbers < 10 , add 10 to each and return
-        // list of those numbers
+        testList_1(src1).stream().forEach(e -> System.out.print(e + " ")); // <--- test_1 is about select
+                                                                    // numbers < 10 , add 10 to each and return
+                                                                   // list of those numbers
 
+        System.out.println("\n");
         List<String> src2 = Arrays.asList("aa", "bbbb", "ccccccc", "ddddddddddaaaeee ");
-        System.out.println(testList_2(src2)); // <--- test_2 is about select Strings with
-        // String length > 3 , add 10 to each
-        // selected length and return list of those numbers
+        testList_2(src2).stream().forEach(e -> System.out.print(e + " ")); // <--- test_2 is about select Strings with
+                                                                      // String length > 3 , add 10 to each
+                                                                     // selected length and return list of those numbers
+        System.out.println("\n");
+        List<String> src3 = Arrays.asList("hi","my","name","is","Bartek");
+        src3.stream().forEach(e -> System.out.print(e + " "));
+        testList_3(src3).stream().forEach(e -> System.out.print("\n" + e)); // <--- test_3 is about to select
+                                                                           // Strings equals "Bartek"
+
     }
 
     public List<Integer> testList_1(List<Integer> source) {
@@ -62,10 +70,10 @@ public class StartClass {
             }
         };
 
-        MyMapper<String, Integer> mapper = new MyMapper<String, Integer>() {
+        MyMapper<String, String> mapper = new MyMapper<String, String>() {
             @Override
-            public Integer map(String value) {
-                return value.length() + 10;
+            public String map(String value) {
+                return String.valueOf(value.length() + 10);
             }
         };
 
@@ -73,6 +81,11 @@ public class StartClass {
     }
 
 
+    // Much shorter...
+    public List <String> testList_3(List <String> source) {
+
+        return collectFrom(source).when(e -> e.toString().equals("Bartek")).mapEvery(e -> e + " :)" );
+    }
     public static void main(String[] args) {
         new StartClass();
     }
